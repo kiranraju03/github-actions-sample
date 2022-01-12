@@ -8,6 +8,8 @@ jobs:
             - run: echo "sequentially run"
     build-app:
         runs-on: ubuntu-latest
+        env: # env variables are accessible for this job only.
+            SECRET_PASSWORD: ${{ secrets.SECRET_PASSWORD }} # Picked up from Github secrets
         steps: # Steps are run sequentially
             - uses: actions/checkout@v2 # accesses the current repo, by cloning it
             - run: tree # shows the project structure
@@ -16,3 +18,9 @@ jobs:
                 node-version: '14.17.0'
             - name: Adding labels to step
               run: echo 'label added for step'
+            # - name: Install dependencies
+            #   run: yarn
+            # - name: Build the project
+            #   run: yarn build
+            - name: Accessing the SECRET_PASSWORD for operations
+              run: echo $SECRET_PASSWORD
