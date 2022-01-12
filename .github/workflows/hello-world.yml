@@ -11,3 +11,8 @@ jobs:
         steps: # Steps are run sequentially
             - uses: actions/checkout@v2 # accesses the current repo, by cloning it
             - run: tree # shows the project structure
+            - uses: actions/setup-node@v2
+              with:
+                node-version: '14.17.0'
+            - name: Adding labels to step
+              run: echo 'label added for step'
