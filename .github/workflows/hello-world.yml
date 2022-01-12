@@ -2,7 +2,7 @@ name: Print hello world
 on: [push]
 jobs:
     print-hello-world: # jobs can run parallely too
-		runs-on: ubuntu-latest
-		steps: # Steps are run sequentially
-			- run: echo "Hello World"
-			- run: echo "sequentially run"
+	runs-on: ubuntu-latest
+	steps: # Steps are run sequentially
+		- run: echo "Hello World"
+		- run: echo "sequentially run"
