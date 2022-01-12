@@ -3,13 +3,19 @@ on: [push]
 jobs:
     print-hello-world: # jobs can run parallely too
         runs-on: ubuntu-latest
+        outputs:
+            text: ${{steps.textId.outputs.text}}
         steps: # Steps are run sequentially
             - run: echo "Hello World"
-            - run: echo "sequentially run"
+            - name: exporting text
+              id: textId # adding id for extracting variables
+            - run: echo "::set-output name=text::from first job"
     build-app:
+        needs: print-hello-world # Making build-app depenedent on the first job, print-hello-world
         runs-on: ubuntu-latest
         env: # env variables are accessible for this job only.
             SECRET_PASSWORD: ${{ secrets.SECRET_PASSWORD }} # Picked up from Github secrets
+            FETCH_OUTPUT_TEXT: ${{ needs.print-hello-world.outputs.text }} # Accessing the text
         steps: # Steps are run sequentially
             - uses: actions/checkout@v2 # accesses the current repo, by cloning it
             - run: tree # shows the project structure
@@ -24,3 +30,5 @@ jobs:
             #   run: yarn build
             - name: Accessing the SECRET_PASSWORD for operations
               run: echo $SECRET_PASSWORD
+            - name: Accessing the text from first job
+              run: echo $FETCH_OUTPUT_TEXT
